@@ -23,209 +23,336 @@ st.set_page_config(
 st.markdown(
     """
     <style>
-        .stApp {
-            background: #f5f7fb;
-        }
+    /*
+     * Brand colors remain fixed.
+     * Content colors and card surfaces inherit Streamlit's active theme.
+     */
+    :root {
+        --qa-brand-blue: #2563eb;
+        --qa-brand-blue-light: #93c5fd;
+        --qa-sidebar-start: #0f172a;
+        --qa-sidebar-end: #1e293b;
 
+        --qa-text: var(--text-color);
+        --qa-muted-text: color-mix(
+            in srgb,
+            var(--text-color) 68%,
+            transparent
+        );
+        --qa-card-bg: color-mix(
+            in srgb,
+            var(--secondary-background-color) 96%,
+            var(--primary-color) 4%
+        );
+        --qa-hero-bg-start: color-mix(
+            in srgb,
+            var(--secondary-background-color) 97%,
+            var(--primary-color) 3%
+        );
+        --qa-hero-bg-end: color-mix(
+            in srgb,
+            var(--secondary-background-color) 86%,
+            var(--primary-color) 14%
+        );
+        --qa-border: color-mix(
+            in srgb,
+            var(--text-color) 16%,
+            transparent
+        );
+        --qa-blue-border: color-mix(
+            in srgb,
+            var(--primary-color) 30%,
+            var(--secondary-background-color)
+        );
+        --qa-shadow: color-mix(
+            in srgb,
+            var(--text-color) 10%,
+            transparent
+        );
+    }
+
+    .stApp {
+        background: var(--background-color);
+        color: var(--qa-text);
+    }
+
+    .block-container {
+        max-width: 1440px;
+        padding-top: 2rem;
+        padding-bottom: 3rem;
+    }
+
+    /* Dark-blue branded sidebar */
+
+    [data-testid="stSidebar"] {
+        background: linear-gradient(
+            180deg,
+            var(--qa-sidebar-start) 0%,
+            var(--qa-sidebar-end) 100%
+        );
+    }
+
+    [data-testid="stSidebar"] * {
+        color: #f8fafc;
+    }
+
+    [data-testid="stSidebar"] hr {
+        border-color: rgba(248, 250, 252, 0.14);
+    }
+
+    .sidebar-project {
+        color: var(--qa-brand-blue-light) !important;
+        font-size: 0.75rem;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+    }
+
+    .sidebar-title {
+        color: #f8fafc;
+        font-size: 1.2rem;
+        font-weight: 750;
+        line-height: 1.35;
+        margin: 0.4rem 0 0.35rem;
+    }
+
+    .sidebar-description {
+        color: #cbd5e1 !important;
+        font-size: 0.85rem;
+        margin-bottom: 1.4rem;
+    }
+
+    .sidebar-label {
+        color: #94a3b8 !important;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        margin-top: 1.1rem;
+        text-transform: uppercase;
+    }
+
+    .sidebar-value {
+        color: #f8fafc;
+        font-size: 0.92rem;
+        font-weight: 600;
+        margin-top: 0.2rem;
+    }
+
+    /* Branded hero card */
+
+    .hero {
+        background: linear-gradient(
+            135deg,
+            var(--qa-hero-bg-start) 0%,
+            var(--qa-hero-bg-end) 100%
+        );
+        border: 1px solid var(--qa-blue-border);
+        border-radius: 20px;
+        box-shadow: 0 8px 30px var(--qa-shadow);
+        color: var(--qa-text);
+        margin-bottom: 1.5rem;
+        padding: 2rem 2.2rem;
+    }
+
+    .hero-label {
+        color: var(--qa-brand-blue);
+        font-size: 0.75rem;
+        font-weight: 750;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    .hero-title {
+        color: var(--qa-text);
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 780;
+        letter-spacing: -0.04em;
+        line-height: 1.08;
+        margin: 0.5rem 0 0.7rem;
+    }
+
+    .hero-text {
+        color: var(--qa-muted-text);
+        font-size: 1rem;
+        line-height: 1.65;
+        margin: 0;
+        max-width: 790px;
+    }
+
+    /* Blue branded headings */
+
+    .section-title {
+        color: var(--qa-brand-blue);
+        font-size: 1.25rem;
+        font-weight: 720;
+        margin: 1.7rem 0 0.8rem;
+    }
+
+    .section-caption {
+        color: var(--qa-muted-text);
+        font-size: 0.88rem;
+        margin: -0.55rem 0 1rem;
+    }
+
+    /* File uploader */
+
+    div[data-testid="stFileUploader"] {
+        background: var(--qa-card-bg);
+        border: 1px solid var(--qa-border);
+        border-radius: 16px;
+        box-shadow: 0 4px 18px var(--qa-shadow);
+        color: var(--qa-text);
+        padding: 0.7rem 1rem 0.9rem;
+    }
+
+    div[data-testid="stFileUploader"] section {
+        background: color-mix(
+            in srgb,
+            var(--qa-card-bg) 90%,
+            var(--qa-brand-blue) 10%
+        );
+        border-color: var(--qa-border);
+        color: var(--qa-text);
+    }
+
+    div[data-testid="stFileUploader"] small,
+    div[data-testid="stFileUploader"] span,
+    div[data-testid="stFileUploader"] p {
+        color: var(--qa-text);
+    }
+
+    div[data-testid="stFileUploader"] button {
+        background: color-mix(
+            in srgb,
+            var(--qa-card-bg) 88%,
+            var(--qa-brand-blue) 12%
+        );
+        border-color: var(--qa-blue-border);
+        color: var(--qa-text);
+    }
+
+    /* Professional metric cards */
+
+    div[data-testid="stMetric"] {
+        background: var(--qa-card-bg);
+        border: 1px solid var(--qa-border);
+        border-radius: 16px;
+        box-shadow: 0 4px 18px var(--qa-shadow);
+        color: var(--qa-text);
+        min-height: 122px;
+        padding: 1.15rem 1.2rem;
+    }
+
+    div[data-testid="stMetricLabel"],
+    div[data-testid="stMetricLabel"] p {
+        color: var(--qa-muted-text) !important;
+        font-weight: 650;
+    }
+
+    div[data-testid="stMetricValue"],
+    div[data-testid="stMetricValue"] > div {
+        color: var(--qa-text) !important;
+        font-size: 1.7rem;
+    }
+
+    div[data-testid="stMetricDelta"] {
+        color: var(--qa-text);
+    }
+
+    /* SLA status card */
+
+    .sla-card {
+        background: var(--qa-card-bg);
+        border: 1px solid var(--qa-border);
+        border-radius: 16px;
+        box-shadow: 0 4px 18px var(--qa-shadow);
+        color: var(--qa-text);
+        min-height: 122px;
+        padding: 1.15rem 1.2rem;
+    }
+
+    .sla-label {
+        color: var(--qa-muted-text);
+        font-size: 0.875rem;
+        font-weight: 650;
+        margin-bottom: 1rem;
+    }
+
+    .sla-badge {
+        border-radius: 999px;
+        display: inline-flex;
+        font-size: 0.95rem;
+        font-weight: 750;
+        padding: 0.45rem 0.9rem;
+    }
+
+    /* Uploaded filename */
+
+    .filename {
+        align-items: center;
+        background: color-mix(
+            in srgb,
+            var(--qa-card-bg) 82%,
+            var(--qa-brand-blue) 18%
+        );
+        border: 1px solid var(--qa-blue-border);
+        border-radius: 999px;
+        color: var(--qa-brand-blue);
+        display: inline-flex;
+        font-size: 0.82rem;
+        font-weight: 650;
+        margin-top: 0.65rem;
+        padding: 0.38rem 0.8rem;
+    }
+
+    /* Chart and AI summary containers */
+
+    div[data-testid="stVerticalBlockBorderWrapper"] {
+        background: var(--qa-card-bg);
+        border-color: var(--qa-border);
+        border-radius: 16px;
+        box-shadow: 0 4px 18px var(--qa-shadow);
+        color: var(--qa-text);
+    }
+
+    div[data-testid="stVerticalBlockBorderWrapper"] p,
+    div[data-testid="stVerticalBlockBorderWrapper"] li,
+    div[data-testid="stVerticalBlockBorderWrapper"] strong,
+    div[data-testid="stVerticalBlockBorderWrapper"] em,
+    div[data-testid="stVerticalBlockBorderWrapper"] h1,
+    div[data-testid="stVerticalBlockBorderWrapper"] h2,
+    div[data-testid="stVerticalBlockBorderWrapper"] h3,
+    div[data-testid="stVerticalBlockBorderWrapper"] h4 {
+        color: var(--qa-text);
+    }
+
+    .summary-heading {
+        color: var(--qa-brand-blue);
+        font-size: 0.75rem;
+        font-weight: 750;
+        letter-spacing: 0.1em;
+        margin-bottom: 0.8rem;
+        text-transform: uppercase;
+    }
+
+    @media (max-width: 768px) {
         .block-container {
-            max-width: 1440px;
-            padding-top: 2rem;
-            padding-bottom: 3rem;
-        }
-
-        [data-testid="stSidebar"] {
-            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-        }
-
-        [data-testid="stSidebar"] * {
-            color: #f8fafc;
-        }
-
-        [data-testid="stSidebar"] hr {
-            border-color: rgba(255, 255, 255, 0.14);
-        }
-
-        .sidebar-project {
-            font-size: 0.75rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: #93c5fd !important;
-        }
-
-        .sidebar-title {
-            font-size: 1.2rem;
-            font-weight: 750;
-            line-height: 1.35;
-            margin: 0.4rem 0 0.35rem;
-        }
-
-        .sidebar-description {
-            color: #cbd5e1 !important;
-            font-size: 0.85rem;
-            margin-bottom: 1.4rem;
-        }
-
-        .sidebar-label {
-            color: #94a3b8 !important;
-            font-size: 0.7rem;
-            font-weight: 700;
-            letter-spacing: 0.08em;
-            margin-top: 1.1rem;
-            text-transform: uppercase;
-        }
-
-        .sidebar-value {
-            font-size: 0.92rem;
-            font-weight: 600;
-            margin-top: 0.2rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            padding-top: 1.2rem;
         }
 
         .hero {
-            background: linear-gradient(135deg, #ffffff 0%, #eff6ff 100%);
-            border: 1px solid #dbeafe;
-            border-radius: 20px;
-            box-shadow: 0 8px 30px rgba(15, 23, 42, 0.06);
-            margin-bottom: 1.5rem;
-            padding: 2rem 2.2rem;
-        }
-
-        .hero-label {
-            color: #2563eb;
-            font-size: 0.75rem;
-            font-weight: 750;
-            letter-spacing: 0.12em;
-            text-transform: uppercase;
-        }
-
-        .hero-title {
-            color: #0f172a;
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 780;
-            letter-spacing: -0.04em;
-            line-height: 1.08;
-            margin: 0.5rem 0 0.7rem;
-        }
-
-        .hero-text {
-            color: #64748b;
-            font-size: 1rem;
-            line-height: 1.65;
-            margin: 0;
-            max-width: 790px;
-        }
-
-        .section-title {
-            color: #0f172a;
-            font-size: 1.25rem;
-            font-weight: 720;
-            margin: 1.7rem 0 0.8rem;
-        }
-
-        .section-caption {
-            color: #64748b;
-            font-size: 0.88rem;
-            margin: -0.55rem 0 1rem;
-        }
-
-        div[data-testid="stFileUploader"] {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
             border-radius: 16px;
-            box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
-            padding: 0.7rem 1rem 0.9rem;
+            padding: 1.5rem;
         }
 
-        div[data-testid="stMetric"] {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
-            min-height: 122px;
-            padding: 1.15rem 1.2rem;
-        }
-
-        div[data-testid="stMetricLabel"] {
-            color: #64748b;
-            font-weight: 650;
-        }
-
-        div[data-testid="stMetricValue"] {
-            color: #0f172a;
-            font-size: 1.7rem;
-        }
-
+        div[data-testid="stMetric"],
         .sla-card {
-            background: #ffffff;
-            border: 1px solid #e2e8f0;
-            border-radius: 16px;
-            box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
-            min-height: 122px;
-            padding: 1.15rem 1.2rem;
+            min-height: 108px;
         }
-
-        .sla-label {
-            color: #64748b;
-            font-size: 0.875rem;
-            font-weight: 650;
-            margin-bottom: 1rem;
-        }
-
-        .sla-badge {
-            border-radius: 999px;
-            display: inline-flex;
-            font-size: 0.95rem;
-            font-weight: 750;
-            padding: 0.45rem 0.9rem;
-        }
-
-        .filename {
-            align-items: center;
-            background: #eff6ff;
-            border: 1px solid #bfdbfe;
-            border-radius: 999px;
-            color: #1d4ed8;
-            display: inline-flex;
-            font-size: 0.82rem;
-            font-weight: 650;
-            margin-top: 0.65rem;
-            padding: 0.38rem 0.8rem;
-        }
-
-        div[data-testid="stVerticalBlockBorderWrapper"] {
-            background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 4px 18px rgba(15, 23, 42, 0.04);
-        }
-
-        .summary-heading {
-            color: #2563eb;
-            font-size: 0.75rem;
-            font-weight: 750;
-            letter-spacing: 0.1em;
-            margin-bottom: 0.8rem;
-            text-transform: uppercase;
-        }
-
-        @media (max-width: 768px) {
-            .block-container {
-                padding-left: 1rem;
-                padding-right: 1rem;
-                padding-top: 1.2rem;
-            }
-
-            .hero {
-                border-radius: 16px;
-                padding: 1.5rem;
-            }
-
-            div[data-testid="stMetric"],
-            .sla-card {
-                min-height: 108px;
-            }
-        }
-    </style>
-    """,
+    }
+</style>  """,
     unsafe_allow_html=True,
 )
 
