@@ -324,8 +324,7 @@ streamlit run app.py
 
 ---
 
-## 17. Team Information
-## Team Name : TeamInnovate 
+## 17. Team Information 
 ## Project Title : QA-07 Quality Assurance - Performance Test Result Narrator
 ## Team Members:
 * Member 1 : Polisetty Jahnavi
@@ -344,3 +343,6 @@ Add video link here: https://youtu.be/Y1U7WBeGA1k?si=qxek3-8NyJ3kI5W5
 
 GitHub Repository:
 https://github.com/JahnaviPolisetty/Performance_Test_Result_Narrator
+
+## 20. Live Link
+Link : https://jahnavipolisetty-performance-test-result-narrator-app-8srvmf.streamlit.app/
